@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const ADMIN_EMAIL = "admin@example.com";
-const ADMIN_PASSWORD = "password";
+const ADMIN_PASSWORD = "password123";
 
 export const adminLogin = (req: Request, res: Response) => {
     const { email, password } = req.body;

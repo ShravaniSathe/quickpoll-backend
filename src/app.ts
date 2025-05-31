@@ -5,7 +5,7 @@ import adminRoutes from "./routes/admin.routes";
 import { connectDB } from "./config/db";
 
 const app = express();
-
+// connect to Db
 connectDB();
 app.use(cors());
 app.use(express.json());
