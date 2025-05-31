@@ -1,6 +1,6 @@
 // poll.expiryMonitor.ts
 import { Poll } from "../models/poll.model";
-import { io } from "../sockets/poll.socket";
+import { getIO } from "../sockets/poll.socket";
 
 export const monitorPollExpiry = async (pollId: string) => {
   const poll = await Poll.findById(pollId);
@@ -15,7 +15,7 @@ export const monitorPollExpiry = async (pollId: string) => {
       if (updatedPoll && updatedPoll.isActive) {
         updatedPoll.isActive = false;
         await updatedPoll.save();
-        io.emit("pollExpired", { pollId }); // 👈 emit real-time event
+        getIO().emit("pollExpired", { pollId }); // 👈 emit real-time event
       }
     }, delay);
   }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Poll } from "../models/poll.model";
-import { io } from "../sockets/poll.socket";
+import { getIO } from "../sockets/poll.socket";
 import { monitorPollExpiry } from "../utils/poll.expiryMonitor";
 
 export const createPoll = async (req: Request, res: Response) => {
@@ -33,8 +33,10 @@ export const votePoll = async (req: Request, res: Response) => {
   poll.options[optionIndex].votes += 1;
   await poll.save();
 
-  io.emit("voteUpdate", poll);
-  res.json(poll);
+  // Emit update
+  const results = poll.options.map(({ text, votes }) => ({ option: text, votes }));
+  getIO().to(pollId).emit("pollResultsUpdate", { question: poll.question, results });
+  res.status(200).json({ message: "Vote recorded" });
 };
 
 export const getPoll = async (req: Request, res: Response) => {

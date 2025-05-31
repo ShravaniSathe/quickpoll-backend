@@ -32,8 +32,10 @@ const votePoll = async (req, res) => {
     }
     poll.options[optionIndex].votes += 1;
     await poll.save();
-    poll_socket_1.io.emit("voteUpdate", poll);
-    res.json(poll);
+    // Emit update
+    const results = poll.options.map(({ text, votes }) => ({ option: text, votes }));
+    (0, poll_socket_1.getIO)().to(pollId).emit("pollResultsUpdate", { question: poll.question, results });
+    res.status(200).json({ message: "Vote recorded" });
 };
 exports.votePoll = votePoll;
 const getPoll = async (req, res) => {

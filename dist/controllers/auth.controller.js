@@ -8,7 +8,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const ADMIN_EMAIL = "admin@example.com";
-const ADMIN_PASSWORD = "password";
+const ADMIN_PASSWORD = "password123";
 const adminLogin = (req, res) => {
     const { email, password } = req.body;
     if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {

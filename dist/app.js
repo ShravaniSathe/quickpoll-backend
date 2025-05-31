@@ -9,6 +9,7 @@ const poll_routes_1 = __importDefault(require("./routes/poll.routes"));
 const admin_routes_1 = __importDefault(require("./routes/admin.routes"));
 const db_1 = require("./config/db");
 const app = (0, express_1.default)();
+// connect to Db
 (0, db_1.connectDB)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());

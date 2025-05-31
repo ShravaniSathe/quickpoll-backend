@@ -16,7 +16,7 @@ const monitorPollExpiry = async (pollId) => {
             if (updatedPoll && updatedPoll.isActive) {
                 updatedPoll.isActive = false;
                 await updatedPoll.save();
-                poll_socket_1.io.emit("pollExpired", { pollId }); // 👈 emit real-time event
+                (0, poll_socket_1.getIO)().emit("pollExpired", { pollId }); // 👈 emit real-time event
             }
         }, delay);
     }
