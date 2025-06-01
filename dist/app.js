@@ -11,7 +11,11 @@ const db_1 = require("./config/db");
 const app = (0, express_1.default)();
 // connect to Db
 (0, db_1.connectDB)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: "http://localhost:5173", // Your frontend origin
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(express_1.default.json());
 app.use("/api/polls", poll_routes_1.default);
 app.use("/api/admin", admin_routes_1.default);

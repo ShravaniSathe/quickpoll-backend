@@ -11,9 +11,14 @@ const optionSchema = new mongoose_1.default.Schema({
 });
 const pollSchema = new mongoose_1.default.Schema({
     question: String,
+    createdBy: String,
     options: [optionSchema],
     createdAt: { type: Date, default: Date.now },
     duration: { type: Number, required: true },
-    isActive: { type: Boolean, default: true }
+    isActive: { type: Boolean, default: true },
+    expiresAt: {
+        type: Date,
+        required: true
+    }
 });
 exports.Poll = mongoose_1.default.model("Poll", pollSchema);

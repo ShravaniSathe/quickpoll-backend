@@ -7,7 +7,13 @@ import { connectDB } from "./config/db";
 const app = express();
 // connect to Db
 connectDB();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Your frontend origin
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 
 app.use("/api/polls", pollRoutes);

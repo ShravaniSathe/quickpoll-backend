@@ -4,11 +4,14 @@ import { getIO } from "../sockets/poll.socket";
 import { monitorPollExpiry } from "../utils/poll.expiryMonitor";
 
 export const createPoll = async (req: Request, res: Response) => {
-  const { question, options, duration } = req.body;
+  const { question, options, duration,userId } = req.body;
+  const expiresAt = new Date(Date.now() + duration * 60 * 1000); // duration in minutes
   const poll = new Poll({
     question,
     options: options.map((text: string) => ({ text })),
-    duration
+    duration,
+    createdBy: userId,
+    expiresAt
   });
   await poll.save();
   monitorPollExpiry(poll._id.toString());
@@ -77,3 +80,10 @@ export const getPollResults = async (req: Request, res: Response) => {
   res.json({ question: poll.question, results });
 };
 
+export const getUserPolls = async (req: Request, res: Response) => {
+  const { userId } = req.query;
+  if (!userId) return res.status(400).json({ message: "Missing userId" });
+
+  const polls = await Poll.find({ createdBy: userId });
+  res.json(polls);
+};

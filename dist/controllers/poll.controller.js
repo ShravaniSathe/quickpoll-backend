@@ -1,15 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPollResults = exports.getActivePolls = exports.getPoll = exports.votePoll = exports.createPoll = void 0;
+exports.getUserPolls = exports.getPollResults = exports.getActivePolls = exports.getPoll = exports.votePoll = exports.createPoll = void 0;
 const poll_model_1 = require("../models/poll.model");
 const poll_socket_1 = require("../sockets/poll.socket");
 const poll_expiryMonitor_1 = require("../utils/poll.expiryMonitor");
 const createPoll = async (req, res) => {
-    const { question, options, duration } = req.body;
+    const { question, options, duration, userId } = req.body;
+    const expiresAt = new Date(Date.now() + duration * 60 * 1000); // duration in minutes
     const poll = new poll_model_1.Poll({
         question,
         options: options.map((text) => ({ text })),
-        duration
+        duration,
+        createdBy: userId,
+        expiresAt
     });
     await poll.save();
     (0, poll_expiryMonitor_1.monitorPollExpiry)(poll._id.toString());
@@ -71,3 +74,11 @@ const getPollResults = async (req, res) => {
     res.json({ question: poll.question, results });
 };
 exports.getPollResults = getPollResults;
+const getUserPolls = async (req, res) => {
+    const { userId } = req.query;
+    if (!userId)
+        return res.status(400).json({ message: "Missing userId" });
+    const polls = await poll_model_1.Poll.find({ createdBy: userId });
+    res.json(polls);
+};
+exports.getUserPolls = getUserPolls;

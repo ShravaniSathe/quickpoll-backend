@@ -8,7 +8,8 @@ const poll_controller_1 = require("../controllers/poll.controller");
 const router = express_1.default.Router();
 router.post("/create", poll_controller_1.createPoll);
 router.post("/vote", poll_controller_1.votePoll);
-router.get("/:id", poll_controller_1.getPoll);
 router.get("/", poll_controller_1.getActivePolls); // if this is meant for active ones only
 router.get("/:id/results", poll_controller_1.getPollResults);
+router.get("/mypolls", poll_controller_1.getUserPolls);
+router.get("/:id", poll_controller_1.getPoll);
 exports.default = router;
