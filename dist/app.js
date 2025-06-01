@@ -12,7 +12,7 @@ const app = (0, express_1.default)();
 // connect to Db
 (0, db_1.connectDB)();
 app.use((0, cors_1.default)({
-    origin: "http://localhost:5173", // Your frontend origin
+    origin: true,
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
 }));

@@ -9,7 +9,7 @@ const app = express();
 connectDB();
 app.use(
   cors({
-    origin: "http://localhost:5173", // Your frontend origin
+    origin: true, 
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
   })
